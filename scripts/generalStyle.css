@@ -1,0 +1,33 @@
+button[type=submit]{
+    border-radius: 20px;
+    background: white;
+    color: rgb(223,23,23);
+    font-size: 14px;
+    border: 2px solid black;
+ }
+ .navBar { 
+	background: rgb(223,23,23);
+	border: 2px solid black;
+	margin-top: 5px;
+	height: 7vh;
+	width: 100vw;
+	margin-bottom: 15px;
+	margin-left: 5px;
+}
+.navBar a{
+	float: left;
+	text-decoration: none;
+	text-align: center;
+	color: white;
+	font-size: 5vh;
+	padding: 17px 15px;
+	font-size: 18px;
+	border-right: 2px solid white;
+}
+#link.active{
+	background: black;
+}
+#link:hover{
+	background: black;
+	color: white;
+}
