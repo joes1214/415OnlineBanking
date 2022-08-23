@@ -6,18 +6,14 @@ if(isset($_POST['adminLogoutBtn'])){
    session_destroy();
    header('location: adminLogin.php');
 }
-$resultNotApproved;
 $userNotFound = "";
 if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['home'])){
 	/*
 	*	If the server has a POST request, it will try and pull up an existing user
 	*/
     $accNum = $_POST['accNum'];
-
     $query = "SELECT * FROM customer_info WHERE accNum = '$accNum'";
-    
 	$result = mysqli_query($dbConnect, $query);
-
     if (!$result->num_rows > 0) {
         $userNotFound = "This account was not found";
     }
@@ -30,7 +26,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['home'])){
 	//As well as list regular users
 	$query = "SELECT accNum, username FROM user_table WHERE approved LIKE 1 LIMIT 100";
 	$result = mysqli_query($dbConnect, $query);
-
 }
 ?> 
 
@@ -189,11 +184,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['home'])){
 								<th>Username</th>
 								<th>Last Name</th>
 								<th>First Name</th>
-								<th>Street</th>
-								<th>City</th>
-								<th>State</th>
-								<th>Zip</th>
-								<th>Apt #</th>
 								<th></th>
 							</tr>
 							<?php
@@ -206,28 +196,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['home'])){
 									$query = "SELECT * FROM user_table WHERE accNum LIKE ".$userInfo['accNum'];
 									$UsrnameResult = mysqli_query($dbConnect, $query);
 									$customerUsername = $UsrnameResult->fetch_assoc();
-
-									
-							
-									echo "<tr>"; // starts row
+		
+									echo "<tr style='background-color:rgba(117, 117, 117, 0.23)'>"; // starts row
 									echo "<td> <h5><span>".$customerInformation['accNum']."</span></h5> </td>";
-									
 									echo "<td> <h5><span>".$customerUsername['username']."</span></h5> </td>";
-									
 									echo "<td> <h5><span>".$customerInformation['LName']."</span></h5> </td>";
-									
 									echo "<td> <h5><span>".$customerInformation['FName']."</span></h5> </td>";
-									
-									echo "<td> <h5><span>".$customerInformation['add_street']."</span></h5> </td>";
-									
-									echo "<td> <h5><span>".$customerInformation['add_town']."</span></h5> </td>";
-
-									echo "<td> <h5><span>".$customerInformation['add_state']."</span></h5> </td>";
-									
-									echo "<td> <h5><span>".$customerInformation['add_zip']."</span></h5> </td>";
-									
-									echo "<td> <h5><span>".$customerInformation['add_aptNum']."</span></h5> </td>";
-									
 									echo "<td>";
 									?>
 									<form action="adminViewUser.php" method="post">
@@ -253,13 +227,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['home'])){
                                     echo "<td> <h5><span>".$row['username']."</span></h5> </td>";
 									echo "<td> <h5><span>".$customerUsername['LName']."</span></h5> </td>";
 									echo "<td> <h5><span>".$customerUsername['FName']."</span></h5> </td>";
-									echo "<td> <h5><span>".$customerUsername['add_street']."</span></h5> </td>";
-									echo "<td> <h5><span>".$customerUsername['add_town']."</span></h5> </td>";
-									echo "<td> <h5><span>".$customerUsername['add_state']."</span></h5> </td>";
-									echo "<td> <h5><span>".$customerUsername['add_zip']."</span></h5> </td>";
-									echo "<td> <h5><span>".$customerUsername['add_aptNum']."</span></h5> </td>";
-    
-                                    
 									echo "<td>";
 									echo"
 										<form action='adminViewUser.php' method='post'>
@@ -275,18 +242,13 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['home'])){
 						<?php
 							echo "<h3 style = 'text-align: center'>$userNotFound</h3>";
 						?>
-
 	                </div>
-	                
-	                
 					
 				</div> 
 					<!--Log out button --> 
 					<form method = "post">
 					    <input id = "adminLogoutBtn" type = "submit" name = "signout" value = "Log out"/>
 					</form>
-
 			</div> 	
-
 	</body>
 </html>
