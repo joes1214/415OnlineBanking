@@ -6,7 +6,7 @@ include('verifySession.php');
 // session start for admin & if logout is pressed, redirection ton admin login
 
 $accNum =  $_SESSION['accNum'];
-$query = "SELECT currentBal, FName, LName, createdDate FROM customer_info WHERE accNum = '$accNum'";
+$query = "SELECT currentBal, FName, LName, createdDate, user_table.username FROM customer_info LEFT JOIN user_table ON customer_info.accNum = user_table.accNum WHERE customer_info.accNum AND user_table.accNum = '$accNum'";
 
 $result = mysqli_query($dbConnect, $query);
 if ($result->num_rows > 0) {
@@ -15,6 +15,7 @@ if ($result->num_rows > 0) {
         $FName = $row['FName'];
         $LName = $row['LName'];
         $createdDate = $row['createdDate'];
+		$Username = $row['username'];
     }
 }
 ?>
@@ -122,7 +123,8 @@ if ($result->num_rows > 0) {
 			<p style = "text-align: center;">Member Since: <?php echo $createdDate; ?></p>
 			<div id ="accountInfo">
 			<p style =  "margin-left: 5px;">  
-    			<?php echo "<b>Welcome back " . $_SESSION['username'] . "</b><br><br>";?>
+				<?php echo "<b>Welcome back " . $Username . "</b><br><br>";?>
+    			<?php //echo "<b>Welcome back " . $LName .", ". $FName . "</b><br><br>";?>
     			<?php echo "Available Balance: $" . $currentBal . "<br><br>";?>
     			<?php echo "Account Number: " . $accNum;?>
     	    </p>

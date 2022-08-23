@@ -42,7 +42,7 @@ if(($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['approved']))){
     $approveQuery = "UPDATE user_table SET approved ='1' WHERE accNum = $accNum";
     $approveResult = mysqli_query($dbConnect, $approveQuery);
 
-    echo $approveResult -> error;
+    //echo $approveResult -> error;
 
     $query = "SELECT * FROM customer_info WHERE accNum = '$accNum'";
 	$result = mysqli_query($dbConnect, $query);
@@ -232,12 +232,6 @@ thats it, when pressed can send the user back to the adminPortal.php page
 			<h3 style= "border-bottom: 2px solid rgb(223,23,23); font-size: 25px; font-family: sans-serif; padding-left: 25px; color: black;"> Welcome Admin! </h3>
 			<div class = "navBar">
     			<a id= "link" href = "adminPortal.php">Home</a>
-    			<!-- Gonna need help setting up this navBar
-    			<a id= "link" href = "">PLACEHOLDER</a> 
-    			<a id= "link" href = "">PLACEHOLDER</a>
-    			<a id= "link" href = "">PLACEHOLDER</a>
-    			<a id= "link" href = "">PLACEHOLDER</a> 
-    			-->
             </div>
 			<!-- Container 1 --> 	
 			<div class = "adminContainer1">
@@ -261,36 +255,58 @@ thats it, when pressed can send the user back to the adminPortal.php page
                                 
                             <?php
                                 if($customerUT['approved'] == 0)
-                                {?>
+                                {
+									/*
+									*	If the user is NOT Approved the following options will show up:
+									*	Approve | Reject | Update
+									*	Reject will set the account to Disabled
+									*/
+							?>
                                     <form action="adminViewUser.php" method="post">
                                         <?php echo "<input type='hidden' name=accNum value='$accNum'/>" ?>
-                                        <?php echo "<button type= 'submit' name='approved' value='1'>Approve</button>"; // done by Victor?>
-                                        <?php echo "<button type= 'submit' name='reject' value='1'>Reject</button>"; // done by Victor?>
-                                        <?php echo "<button type= 'submit' name='update' value='NULL'>Update</button>"; // done by Victor?>
+                                        <?php echo "<button type= 'submit' name='approved' value='1'>Approve</button>";?>
+                                        <?php echo "<button type= 'submit' name='reject' value='1'>Reject</button>";?>
+                                        <?php echo "<button type= 'submit' name='update' value='NULL'>Update</button>";?>
                                     </form>
 
 
-                                <?php } else if($customerUT['approved'] == 1){ ?>
-                                    <form action="adminViewUser.php" method="post">
+                                <?php } else if($customerUT['approved'] == 1){ 
+								/*
+								*	If the user is Approved the following options will show up:
+								*	Disable | Update | Password
+								*/
+								?>
+								<div style="display:table;padding-bottom: 5px">
+                                    <form action="adminViewUser.php" method="post" style="display: table-cell">
                                         <?php echo "<input type='hidden' name=accNum value='$accNum'/>" ?>
-                                        <?php echo "<button type= 'submit' name='reject' value='1'>Disable</button>"; // done by Victor?>
-                                        <?php echo "<button type= 'submit' name='update' value='NULL'>Update</button>"; // done by Victor?>
+                                        <?php echo "<button type= 'submit' name='reject' value='1'>Disable</button>";?>
+                                        <?php echo "<button type= 'submit' name='update' value='NULL'>Update</button>";?>
                                     </form>
-                                    
+									
+									<form action="adminChangePass.php" method="post" style="display: table-cell">
+										<?php echo "<input type='hidden' name=accNum value='$accNum'/>" ?>
+										<?php echo "<button type= 'submit' name='changePass' value='NULL'>Password</button>";?>
+                                    </form>
+								</div>
 
-                                <?php } else if($customerUT['approved'] == 2){?>
-                                    <form action="adminViewUser.php" method="post">
+                                <?php } else if($customerUT['approved'] == 2){
+									/*
+									*	If the user is Disabled the following options will show up:
+									*	Enable | Update
+									*/
+									?>
+                                    <form action="adminViewUser.php" method="post" style="display: table-cell">
                                         <?php echo "<input type='hidden' name=accNum value='$accNum'/>" ?>
-                                        <?php echo "<button type= 'submit' name='approved' value='1'>Enable</button>"; // done by Victor?>
-                                        <?php echo "<button type= 'submit' name='update' value='NULL'>Update</button>"; // done by Victor?>
+                                        <?php echo "<button type= 'submit' name='approved' value='1'>Enable</button>";?>
+                                        <?php echo "<button type= 'submit' name='update' value='NULL'>Update</button>";?>
                                     </form>
 
                                 <?php } else {?>
                                     <form action="adminViewUser.php" method="post">
                                         <?php echo "<input type='hidden' name=accNum value='$accNum'/>" ?>
-                                        <?php echo "<button type= 'submit' name='approved' value='1'>Approve</button>"; // done by Victor?>
-                                        <?php echo "<button type= 'submit' name='reject' value='1'>Reject</button>"; // done by Victor?>
-                                        <?php echo "<button type= 'submit' name='update' value='NULL'>Update</button>"; // done by Victor?>
+                                        <?php echo "<button type= 'submit' name='approved' value='1'>Approve</button>";?>
+                                        <?php echo "<button type= 'submit' name='reject' value='1'>Reject</button>";?>
+                                        <?php echo "<button type= 'submit' name='update' value='NULL'>Update</button>";?>
                                     </form>
                                 <?php }
                                 ?>
