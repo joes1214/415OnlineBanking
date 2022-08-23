@@ -1,3 +1,5 @@
+_This project is being maintained solely by me. The initial commit is the project that was handed with some minor revisions. Any further commits are made by me as a way to further my php/sql abilities._
+
 # Online Banking System
 Project for CSIT415 Software Engineering II
 
