@@ -9,29 +9,28 @@ if(isset($_POST['adminLogoutBtn'])){
 $resultNotApproved;
 $userNotFound = "";
 if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['home'])){
+	/*
+	*	If the server has a POST request, it will try and pull up an existing user
+	*/
     $accNum = $_POST['accNum'];
-    //$query = "SELECT currentBal, LName, FName, add_street, add_town, add_state, add_zip, add_aptNum FROM customer_info WHERE accNum = '$accNum'";
+
     $query = "SELECT * FROM customer_info WHERE accNum = '$accNum'";
     
 	$result = mysqli_query($dbConnect, $query);
-
-	// foreach ($resultNotApproved as $userInfo):
-	// 	$query = "SELECT * FROM customer_info WHERE accNum LIKE ".$userInfo['accNum'];
-	// 	$custInfoResults = mysqli_query($dbConnect, $query);
-	// 	$customerInformation = $custInfoResults->fetch_assoc();
 
     if (!$result->num_rows > 0) {
         $userNotFound = "This account was not found";
     }
 
 }else{
+	//If not, it will display a list of users who have not been approved yet
 	$query = "SELECT accNum FROM user_table WHERE approved LIKE 0";
 	$resultNotApproved = mysqli_query($dbConnect, $query);
+	
+	//As well as list regular users
+	$query = "SELECT accNum, username FROM user_table WHERE approved LIKE 1 LIMIT 100";
+	$result = mysqli_query($dbConnect, $query);
 
-	// foreach($resultNotApproved as $test):
-	// 	echo "string".($test['accNum'])."aaa";
-	// endforeach;
-	//testing to see how this would work for shorthand code
 }
 ?> 
 
@@ -173,12 +172,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['home'])){
 			<h3 style= "border-bottom: 2px solid rgb(223,23,23); font-size: 25px; font-family: sans-serif; padding-left: 25px; color: black;"> Welcome Admin! </h3>
 			<div class = "navBar">
     			<a id= "link" href = "adminPortal.php">Home</a>
-    			<!-- Gonna need help setting up this navBar
-    			<a id= "link" href = "">PLACEHOLDER</a> 
-    			<a id= "link" href = "">PLACEHOLDER</a>
-    			<a id= "link" href = "">PLACEHOLDER</a>
-    			<a id= "link" href = "">PLACEHOLDER</a> 
-    			-->
             </div>
 			<!-- Container 1 --> 	
 			<div class = "adminContainer1">
@@ -205,68 +198,66 @@ if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['home'])){
 							</tr>
 							<?php
 							if(!empty($resultNotApproved)){
-								if($resultNotApproved){
-									foreach ($resultNotApproved as $userInfo):
-										$query = "SELECT * FROM customer_info WHERE accNum LIKE ".$userInfo['accNum'];
-										$custInfoResults = mysqli_query($dbConnect, $query);
-										$customerInformation = $custInfoResults->fetch_assoc();
-										
-										$query = "SELECT * FROM user_table WHERE accNum LIKE ".$userInfo['accNum'];
-										$UsrnameResult = mysqli_query($dbConnect, $query);
-										$customerUsername = $UsrnameResult->fetch_assoc();
+								foreach ($resultNotApproved as $userInfo):
+									$query = "SELECT * FROM customer_info WHERE accNum LIKE ".$userInfo['accNum'];
+									$custInfoResults = mysqli_query($dbConnect, $query);
+									$customerInformation = $custInfoResults->fetch_assoc();
+									
+									$query = "SELECT * FROM user_table WHERE accNum LIKE ".$userInfo['accNum'];
+									$UsrnameResult = mysqli_query($dbConnect, $query);
+									$customerUsername = $UsrnameResult->fetch_assoc();
 
-										
-								
-										echo "<tr>"; // starts row
-										echo "<td> <h5><span>".$customerInformation['accNum']."</span></h5> </td>";
-										
-										echo "<td> <h5><span>".$customerUsername['username']."</span></h5> </td>";
-										
-										echo "<td> <h5><span>".$customerInformation['LName']."</span></h5> </td>";
-										
-										echo "<td> <h5><span>".$customerInformation['FName']."</span></h5> </td>";
-										
-										echo "<td> <h5><span>".$customerInformation['add_street']."</span></h5> </td>";
-										
-										echo "<td> <h5><span>".$customerInformation['add_town']."</span></h5> </td>";
+									
+							
+									echo "<tr>"; // starts row
+									echo "<td> <h5><span>".$customerInformation['accNum']."</span></h5> </td>";
+									
+									echo "<td> <h5><span>".$customerUsername['username']."</span></h5> </td>";
+									
+									echo "<td> <h5><span>".$customerInformation['LName']."</span></h5> </td>";
+									
+									echo "<td> <h5><span>".$customerInformation['FName']."</span></h5> </td>";
+									
+									echo "<td> <h5><span>".$customerInformation['add_street']."</span></h5> </td>";
+									
+									echo "<td> <h5><span>".$customerInformation['add_town']."</span></h5> </td>";
 
-										echo "<td> <h5><span>".$customerInformation['add_state']."</span></h5> </td>";
-										
-										echo "<td> <h5><span>".$customerInformation['add_zip']."</span></h5> </td>";
-										
-										echo "<td> <h5><span>".$customerInformation['add_aptNum']."</span></h5> </td>";
-										
-										echo "<td>";
-										?>
-										<form action="adminViewUser.php" method="post">
-											<?php echo "<button type='submit' name=accNum value=".$customerInformation['accNum'].">View</button>"; ?>
-										</form>
-										<?php
-										echo "</td>";
-										
-										echo "</tr>";
-									endforeach;
-								}
+									echo "<td> <h5><span>".$customerInformation['add_state']."</span></h5> </td>";
+									
+									echo "<td> <h5><span>".$customerInformation['add_zip']."</span></h5> </td>";
+									
+									echo "<td> <h5><span>".$customerInformation['add_aptNum']."</span></h5> </td>";
+									
+									echo "<td>";
+									?>
+									<form action="adminViewUser.php" method="post">
+										<?php echo "<button type='submit' name=accNum value=".$customerInformation['accNum'].">View</button>"; ?>
+									</form>
+									<?php
+									echo "</td>";
+									
+									echo "</tr>";
+								endforeach;
 							}
 							?>
 
 							<?php
 							if(!empty($result)){
 								foreach($result as $row):
-								    $query = "SELECT username, approved FROM user_table WHERE accNum LIKE ".($row['accNum']);
+								    $query = "SELECT * FROM customer_info WHERE accNum LIKE ".($row['accNum']);
 									$UsrnameResult = mysqli_query($dbConnect, $query);
 									$customerUsername = $UsrnameResult->fetch_assoc();
 									
 									echo "<tr>"; // starts row
 									echo "<td> <h5><span>".$row['accNum']."</span></h5> </td>";
-                                    echo "<td> <h5><span>".$customerUsername['username']."</span></h5> </td>";
-									echo "<td> <h5><span>".$row['LName']."</span></h5> </td>";
-									echo "<td> <h5><span>".$row['FName']."</span></h5> </td>";
-									echo "<td> <h5><span>".$row['add_street']."</span></h5> </td>";
-									echo "<td> <h5><span>".$row['add_town']."</span></h5> </td>";
-									echo "<td> <h5><span>".$row['add_state']."</span></h5> </td>";
-									echo "<td> <h5><span>".$row['add_zip']."</span></h5> </td>";
-									echo "<td> <h5><span>".$row['add_aptNum']."</span></h5> </td>";
+                                    echo "<td> <h5><span>".$row['username']."</span></h5> </td>";
+									echo "<td> <h5><span>".$customerUsername['LName']."</span></h5> </td>";
+									echo "<td> <h5><span>".$customerUsername['FName']."</span></h5> </td>";
+									echo "<td> <h5><span>".$customerUsername['add_street']."</span></h5> </td>";
+									echo "<td> <h5><span>".$customerUsername['add_town']."</span></h5> </td>";
+									echo "<td> <h5><span>".$customerUsername['add_state']."</span></h5> </td>";
+									echo "<td> <h5><span>".$customerUsername['add_zip']."</span></h5> </td>";
+									echo "<td> <h5><span>".$customerUsername['add_aptNum']."</span></h5> </td>";
     
                                     
 									echo "<td>";
