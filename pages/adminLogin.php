@@ -1,5 +1,5 @@
 <?php
-	include('../database/dbConnectUser.php');
+	include('include/dbConnectUser.php');
 	session_start();
 
 	$username = $password = "";
@@ -51,7 +51,7 @@
 									   if not, it will take you to customer landing page.
 									*/
 									$_SESSION['accNum'] = $accNum;
-									echo '<META HTTP-EQUIV="refresh" content="0; URL=adminPortal.php">';
+									echo '<META HTTP-EQUIV="refresh" content="0; URL=admin/adminPortal.php">';
 									//MUST redirect to admin portal
 								}
 							}else

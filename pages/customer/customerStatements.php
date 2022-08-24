@@ -1,6 +1,6 @@
 <?php 
-include('../database/dbConnectUser.php');
-include('verifySession.php');
+    include("../include.php");
+
 // session start for admin & if logout is pressed, redirection ton admin login
 
 
@@ -104,17 +104,7 @@ include('verifySession.php');
 	<body>
 		<h2 style= "border-bottom: 2px solid rgb(223,23,23); font-size: 30px; font-family: sans-serif; padding-left: 25px; color: black;"> View/Print Your Statements </h2>
 		
-		<div class = "navBar">
-			<a style = "font-size: 18px; color: black; background: white; overflow: auto; ">Digital Banking</a>
-			<a id= "link" href = "customerHomePage.php">Home</a> 
-			<a id= "link" href = "customerBalanceTransfer.php">Balance Transfer</a> 
-			<a id= "link" href = "customerTransactions.php">Transaction History</a>
-			<a id= "link" href = "customerStatements.php">Statements</a>
-			<a id= "link" href = "customerAccount.php"> Account</a> 
-			<form id = "signoutForm" method = "post">
-			    <input id = "signout" name = "signout" value = "Sign Out" type = "submit"/>
-            </form>
-		</div>
+		<?php include("customerNavBar.php");?>
 
 		<div id = "content">
     		<div id ="statements">

@@ -1,6 +1,6 @@
 <?php
 // Include config file
-include('../database/dbConnectUser.php');
+include('include/dbConnectUser.php');
  
 // Define variables and initialize with empty values
 $username = $password = $confirm_password = "";

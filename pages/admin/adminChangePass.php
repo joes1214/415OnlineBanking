@@ -1,12 +1,14 @@
 <?php
-	include('../database/dbConnectUser.php');
-	include('verifySession.php');
-    $accNum = $_SESSION['accNum'];
-   
+    include("../include.php");
     
+
+    $accNum = $_POST['accNum'];
+	
     $errors = [];
     $username = $password = $confirm_password = "";
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
+	
+    if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['changePass'])){
+		echo "IN PASSWORD CHECK";
         if(empty(trim($_POST["password"]))){
             $errors['password'] = "Password Required";
 
@@ -30,7 +32,7 @@
         }
 
         if(count($errors) == 0){
-            $query = "SELECT * FROM user_table WHERE username='$username' LIMIT 1";
+            $query = "SELECT * FROM user_table WHERE accNum='$accNum' LIMIT 1";
             $result = mysqli_query($dbConnect, $query);
 
             if(mysqli_num_rows($result) > 0){
@@ -42,7 +44,7 @@
                 $result = $stmt->execute();
 
                 if($result){
-                    header("location: login.php");
+                    header("location: adminPortal.php");
                 }else{
                     echo "Something went wrong.";
                 }
@@ -52,7 +54,15 @@
             }
 
         }
-    }
+    } 
+	$query = "SELECT username FROM user_table WHERE accNum='$accNum' LIMIT 1";
+	$result = mysqli_query($dbConnect, $query);
+	
+	if (!$result->num_rows > 0) {
+		echo "ERROR";
+	} else {
+		$row = $result->fetch_assoc();
+	}
     
     mysqli_close($dbConnect);
 ?>
@@ -96,6 +106,9 @@
     </style>
     </head>
     <body>
+		<div class = "navBar">
+			<a id= "link" href = "adminPortal.php">Home</a>
+		</div>
 
     <?php // will display any errors that are present
             if(count($errors) > 0): ?>
@@ -108,7 +121,7 @@
                     </div>
         <?php endif; ?>
 
-    <h1 style = "text-align: center;">Account Password Reset</h1>
+    <h1 style = "text-align: center;">Account Password Reset for: <?php echo $row['username']?>, ID: <?php echo $accNum?></h1>
         <table class="layout">
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                 <tr>
@@ -125,11 +138,11 @@
                 </tr>
                 <tr>
                     <td colspan = "2">
-                        <input id ="resetBtn" type="submit" value="Reset">
+                        <input id ="resetBtn" type="submit" name="reset" value="Reset"/>
+						<input type="hidden" name= "accNum" value="<?php echo $accNum;?>" value = "View"/>
                     </td>
                 </tr>
-                </form>
-            </table>
-        </form>
+            </form>
+        </table>
     </body>
 </html>

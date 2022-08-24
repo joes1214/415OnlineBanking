@@ -1,6 +1,7 @@
 <?php 
-include('../database/dbConnectUser.php');
-include('verifySession.php');
+	include("../include.php");
+
+
 
 if(isset($_POST['adminLogoutBtn'])){
    session_destroy();
