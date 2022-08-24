@@ -1,10 +1,10 @@
 <?php 
-include('../database/dbConnectUser.php');
-include('verifySession.php');
+    include("../include.php");
+
 
 if(isset($_POST['adminLogoutBtn'])){
    session_destroy();
-   header('location: adminLogin.php');
+   header('location: ../adminLogin.php');
 }
 $userNotFound = "";
 if($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['home'])){

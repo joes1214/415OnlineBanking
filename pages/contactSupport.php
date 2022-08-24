@@ -87,7 +87,7 @@ if(isset($_POST['sendBtn'])){
 
 						<label for="password">Message:</label>
 						<br>
-						<textarea style= "width: 250px; height: 150px;"  name = "message" required /></textarea>
+						<textarea style= "width: 250px; height: 150px;"  name = "message" required></textarea>
 						<br>
 					<br>
 					<br>
@@ -103,11 +103,8 @@ if(isset($_POST['sendBtn'])){
 						|
 						<a href="registerUser.php">Register</a>
 						|
-						<a href=" ">Contact Support </a>
-						|
-						<a href="secretPassReset.php">Forgot Password</a>
+						<a href="ERROR.php">Forgot Password</a>
 					</div> </h4>
 			</div> 
 		</div>
-		<p> <h2 style = "text-align: center; color: red"><?php echo $notApprovedError ?></h2></p>
   </body>

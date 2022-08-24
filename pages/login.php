@@ -1,5 +1,5 @@
 <?php
-	include('../database/dbConnectUser.php');
+	include('include/dbConnectUser.php');
     session_start();
     //$_SESSION['username'] = $_POST["username"];
 	$username = $password = "";
@@ -50,7 +50,7 @@
 									   if not, it will take you to customer landing page.
 									*/
 									$_SESSION['accNum'] = $accNum;
-									echo '<META HTTP-EQUIV="refresh" content="0; URL=customerHomePage.php">';
+									echo '<META HTTP-EQUIV="refresh" content="0; URL=customer/customerHomePage.php">';
 								
  								}elseif($acc_type == 1){			
 									//echo "Use admin login";			
